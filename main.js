@@ -58,23 +58,12 @@ function render(options) {
 	
 	//sukuriam laiptelio veidrodinę versiją
 	var stepMirrored = step.clone();
-	stepMirrored.position.x += 20;
+	stepMirrored.position.x -= 20;
 	stepMirrored.rotation.y += -1 * Math.PI;
 	stepMirrored.position.y += 1;
 	
 	//sukuriam konstrukcijų ir turėklo medžiagą
-	const construction_material = new THREE.MeshPhongMaterial();
-	construction_material.shininess = 90;
-	var texture = new THREE.TextureLoader().load( "textures/gold.jpg" );
-	texture.wrapT = THREE.RepeatWrapping;
-	texture.repeat.set( 1, 0.25 );
-	construction_material.map = texture;
-	
-	//uždedam normalinį žemėlapį
-	texture = new THREE.TextureLoader().load( "textures/gold_N.jpg" );
-	texture.wrapT = THREE.RepeatWrapping;
-	texture.repeat.set( 1, 0.25 );
-	construction_material.normalMap = texture;
+	const construction_material = new THREE.MeshPhongMaterial({color:0x979997});
 	
 	//Sukuriam cilindrą einantį iš laiptelio apačios
 	var geometry = new THREE.CylinderGeometry( 1, 1, STARTING_HEIGHT/STAIR_QUANTITY + 1, 32 );
@@ -146,7 +135,7 @@ function render(options) {
 	geometry = new THREE.BoxGeometry(2, 2, 8);
 	var cube = new THREE.Mesh( geometry, construction_material );
 	cube.position.add(all_steps[0].position);
-	cube.position.x += 10;
+	cube.position.x -= 10;
 	cube.position.z += 4;
 	cube.position.y -= 1; 
 	scene.add(cube);
@@ -210,12 +199,7 @@ function render(options) {
 	scene.add(tube);
 	
 	//Sukuriam grindų medžiagą
-	var planeMaterial = new THREE.MeshLambertMaterial();
-	texture = new THREE.TextureLoader().load( "textures/floor.jpg" );
-	texture.wrapT = THREE.RepeatWrapping;
-	texture.wrapS = THREE.RepeatWrapping;
-	texture.repeat.set( 10, 10 );
-	planeMaterial.map = texture;
+	var planeMaterial = new THREE.MeshLambertMaterial({color: 0x330000});
 	
 	//Sukuriam pirmo aukšto grindis
 	var planeGeometry = new THREE.PlaneGeometry(300, 300);
@@ -266,6 +250,8 @@ function createStep() {
 	stepMaterial.map = texture;
 	const mesh = new THREE.Mesh( geometry, stepMaterial ) ;
 	mesh.rotation.x = -0.5 * Math.PI;
+	mesh.rotation.z = Math.PI;
+	mesh.position.x += length;
 	return mesh;
 }
 
